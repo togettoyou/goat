@@ -1,6 +1,6 @@
 # pkg/conf
 
-默认从 `conf/goat.yaml` 加载配置。
+默认从 `conf/default.yaml` 加载配置。
 
 也可以通过启动参数重新指定配置文件。
 

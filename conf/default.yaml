@@ -1,0 +1,54 @@
+# 程序配置
+app:
+  # jwt签名秘钥，务必更改
+  jwtSecret: 1ac74db6823e95cdcb3deac50856c054
+
+# 服务配置
+server:
+  # 开发模式 debug,release,test
+  runMode: debug
+  # 读超时/s
+  readTimeout: 60
+  # 写超时/s
+  writeTimeout: 60
+  # 端口
+  httpPort: 8888
+  # 开启 https true,false
+  tls: false
+  # 公钥路径
+  crt: tls/server.crt
+  # 私钥路径
+  key: tls/server.key
+
+# 日志配置
+log:
+  # 日志输出等级 fatal,error,warn,info,debug
+  level: debug
+  # 日志是否记录到文件 true,false
+  isFile: false
+  # ---------------------------------
+  # 以下配置均当 isFile 为 true 时才生效
+  # ---------------------------------
+  # 普通级别(warn,info,debug)日志存放位置
+  filePath: log/log.log
+  # 错误级别(fatal,error)日志存放位置
+  errFilePath: log/err.log
+  # 单个日志文件的最大大小（M）,当 isFile 为 true 时生效
+  maxSize: 100
+  # 保留旧日志的最大天数
+  maxAge: 7
+  # 保留旧日志的最大文件数
+  maxBackups: 10
+  # ---------------------------------
+
+# mysql 配置
+# 配置内容参考: https://gorm.io/zh_CN/docs/connecting_to_the_database.html
+mysql:
+  # 连接驱动
+  dsn: root:123456@tcp(127.0.0.1:3306)/db_default?charset=utf8mb4&parseTime=True&loc=Local
+  # 空闲连接池中连接的最大数量
+  maxIdle: 10
+  # 打开数据库连接的最大数量
+  maxOpen: 10
+  # 连接可复用的最大时间/单位分钟
+  maxLifetime: 60
