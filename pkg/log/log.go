@@ -23,8 +23,7 @@ func Setup() {
 	))
 	// Option可选配置
 	options := []zap.Option{
-		zap.AddCaller(),                   // Caller调用显示
-		zap.AddStacktrace(zap.ErrorLevel), // 堆栈跟踪级别
+		zap.AddCaller(),
 	}
 	// 构建一个 zap 实例
 	logger := zap.New(

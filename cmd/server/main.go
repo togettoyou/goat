@@ -9,7 +9,7 @@ import (
 	"goat/pkg"
 	"goat/pkg/conf"
 	"goat/pkg/log"
-	"goat/pkg/validator"
+	"goat/pkg/validatorer"
 	"goat/pkg/version"
 
 	"github.com/spf13/pflag"
@@ -30,7 +30,7 @@ func setup() {
 		server.Reset()
 	})
 	log.Setup()
-	validator.Setup()
+	validatorer.Setup()
 }
 
 func main() {

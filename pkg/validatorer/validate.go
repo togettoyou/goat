@@ -1,4 +1,4 @@
-package validator
+package validatorer
 
 import (
 	"errors"
@@ -18,15 +18,6 @@ var (
 	trans    ut.Translator
 
 	transErr = errors.New("translator is not ok")
-
-	vt = []validationTranslation{
-		{
-			tag: "checkUsername",
-			Fun: checkUsername,
-			msg: "{0}必须是由字母开头的4-16位字母和数字组成的字符串",
-		},
-		// 可自行扩展...
-	}
 )
 
 func V() *validator.Validate {
