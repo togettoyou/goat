@@ -24,22 +24,6 @@ server:
 log:
   # 日志输出等级 fatal,error,warn,info,debug
   level: debug
-  # 日志是否记录到文件 true,false
-  isFile: false
-  # ---------------------------------
-  # 以下配置均当 isFile 为 true 时才生效
-  # ---------------------------------
-  # 普通级别(warn,info,debug)日志存放位置
-  filePath: log/log.log
-  # 错误级别(fatal,error)日志存放位置
-  errFilePath: log/err.log
-  # 单个日志文件的最大大小（M）,当 isFile 为 true 时生效
-  maxSize: 100
-  # 保留旧日志的最大天数
-  maxAge: 7
-  # 保留旧日志的最大文件数
-  maxBackups: 10
-  # ---------------------------------
 
 # mysql 配置
 # 配置内容参考: https://gorm.io/zh_CN/docs/connecting_to_the_database.html

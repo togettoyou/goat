@@ -8,6 +8,7 @@ import (
 	"goat/internal/server"
 	"goat/pkg"
 	"goat/pkg/conf"
+	"goat/pkg/log"
 	"goat/pkg/validator"
 	"goat/pkg/version"
 
@@ -28,6 +29,7 @@ func setup() {
 		}
 		server.Reset()
 	})
+	log.Setup()
 	validator.Setup()
 }
 

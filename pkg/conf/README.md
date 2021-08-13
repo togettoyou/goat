@@ -1,4 +1,4 @@
-# pkg/conf
+# conf
 
 默认从 `conf/default.yaml` 加载配置。
 

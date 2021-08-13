@@ -29,13 +29,7 @@ type server struct {
 }
 
 type log struct {
-	Level       string `yaml:"level"`
-	IsFile      bool   `yaml:"isFile"`
-	FilePath    string `yaml:"filePath"`
-	ErrFilePath string `yaml:"errFilePath"`
-	MaxSize     int    `yaml:"maxSize"`
-	MaxAge      int    `yaml:"maxAge"`
-	MaxBackups  int    `yaml:"maxBackups"`
+	Level string `yaml:"level"`
 }
 
 type mysql struct {
