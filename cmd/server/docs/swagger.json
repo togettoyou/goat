@@ -1,0 +1,18 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "🐐 基于 gin + gorm 的轻量级工程项目",
+        "title": "goat",
+        "contact": {},
+        "license": {},
+        "version": "1.0"
+    },
+    "paths": {},
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

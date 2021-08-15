@@ -3,6 +3,7 @@ module goat
 go 1.15
 
 require (
+	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/pprof v1.3.0
@@ -13,5 +14,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.8.1
+	github.com/swaggo/gin-swagger v1.3.1
+	github.com/swaggo/swag v1.7.1
 	go.uber.org/zap v1.19.0
 )

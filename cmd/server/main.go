@@ -33,6 +33,12 @@ func setup() {
 	validatorer.Setup()
 }
 
+// @title goat
+// @version 1.0
+// @description 🐐 基于 gin + gorm 的轻量级工程项目
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	pflag.Parse()
 	if *v {
