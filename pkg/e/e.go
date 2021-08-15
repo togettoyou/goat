@@ -2,6 +2,7 @@ package e
 
 import (
 	"fmt"
+
 	"github.com/pkg/errors"
 )
 
@@ -11,7 +12,7 @@ type errno struct {
 }
 
 func (e errno) Error() string {
-	return e.msg
+	return fmt.Sprintf("code = %d msg = %s", e.code, e.msg)
 }
 
 type codeError struct {
@@ -21,28 +22,11 @@ type codeError struct {
 }
 
 func (e *codeError) Error() string {
-	return fmt.Sprintf("error: code = %d msg = %s err = %s", e.code, e.msg, e.err)
+	return fmt.Sprintf("code = %d msg = %s err = %s", e.code, e.msg, e.err)
 }
 
 // New 新建错误
-func New(errno *errno, err error) *codeError {
-	return &codeError{code: errno.code, msg: errno.msg, err: err}
-}
-
-// Add 添加错误消息
-func (e *codeError) Add(msg string) *codeError {
-	e.msg += " " + msg
-	return e
-}
-
-// Addf 添加错误消息
-func (e *codeError) Addf(format string, args ...interface{}) *codeError {
-	e.msg += " " + fmt.Sprintf(format, args...)
-	return e
-}
-
-// NewWithStack 新建错误，附加调用栈
-func NewWithStack(errno *errno, err error) error {
+func New(errno *errno, err error) error {
 	return errors.WithStack(&codeError{code: errno.code, msg: errno.msg, err: err})
 }
 
@@ -68,6 +52,7 @@ func DecodeErr(err error) (int, string) {
 	if err == nil {
 		return OK.code, OK.msg
 	}
+	err = Cause(err)
 	switch typed := err.(type) {
 	case *errno:
 		return typed.code, typed.msg

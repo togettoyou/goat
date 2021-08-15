@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"goat/internal/server/middleware"
 	"goat/pkg/e"
 	"goat/pkg/validatorer"
 
@@ -29,17 +30,19 @@ func (api *Api) OK(c *gin.Context, arg ...interface{}) {
 	if len(arg) > 0 {
 		resp.Data = arg[0]
 	}
+	middleware.SetCode(c, resp.Code, resp.Msg)
 	c.AbortWithStatusJSON(http.StatusOK, resp)
 }
 
 // Err 错误请求
-func (api *Api) Err(c *gin.Context, err error, log bool, arg ...interface{}) {
+func (api *Api) Err(c *gin.Context, httpCode int, err error, log bool, arg ...interface{}) {
 	code, msg := e.DecodeErr(err)
 	resp := response{Code: code, Msg: msg, Data: map[string]interface{}{}}
 	if len(arg) > 0 {
 		resp.Data = arg[0]
 	}
-	c.AbortWithStatusJSON(http.StatusBadRequest, resp)
+	middleware.SetCode(c, code, msg)
+	c.AbortWithStatusJSON(httpCode, resp)
 	if log {
 		api.Log.Error(fmt.Sprintf("%+v", err))
 	}
@@ -48,7 +51,7 @@ func (api *Api) Err(c *gin.Context, err error, log bool, arg ...interface{}) {
 // HasErr 判断业务错误
 func (api *Api) HasErr(c *gin.Context, err error) bool {
 	if err != nil {
-		api.Err(c, err, false)
+		api.Err(c, http.StatusInternalServerError, err, false)
 		return true
 	}
 	return false
@@ -57,7 +60,7 @@ func (api *Api) HasErr(c *gin.Context, err error) bool {
 // HasErrL 判断业务错误，并打印错误
 func (api *Api) HasErrL(c *gin.Context, err error) bool {
 	if err != nil {
-		api.Err(c, err, true)
+		api.Err(c, http.StatusInternalServerError, err, true)
 		return true
 	}
 	return false
@@ -65,73 +68,45 @@ func (api *Api) HasErrL(c *gin.Context, err error) bool {
 
 func (api *Api) ParseUri(c *gin.Context, request interface{}, hideDetails ...bool) bool {
 	if err := c.ShouldBindUri(request); err != nil {
-		return api.ValidatorData(c, err, len(hideDetails) > 0 && hideDetails[0], false)
+		return api.ValidatorData(c, err, len(hideDetails) > 0 && hideDetails[0])
 	}
 	return true
 }
 
 func (api *Api) ParseQuery(c *gin.Context, request interface{}, hideDetails ...bool) bool {
 	if err := c.ShouldBindQuery(request); err != nil {
-		return api.ValidatorData(c, err, len(hideDetails) > 0 && hideDetails[0], false)
+		return api.ValidatorData(c, err, len(hideDetails) > 0 && hideDetails[0])
 	}
 	return true
 }
 
 func (api *Api) ParseJSON(c *gin.Context, request interface{}, hideDetails ...bool) bool {
 	if err := c.ShouldBindJSON(request); err != nil {
-		return api.ValidatorData(c, err, len(hideDetails) > 0 && hideDetails[0], false)
+		return api.ValidatorData(c, err, len(hideDetails) > 0 && hideDetails[0])
 	}
 	return true
 }
 
 func (api *Api) ParseForm(c *gin.Context, request interface{}, hideDetails ...bool) bool {
 	if err := c.ShouldBindWith(request, binding.Form); err != nil {
-		return api.ValidatorData(c, err, len(hideDetails) > 0 && hideDetails[0], false)
-	}
-	return true
-}
-
-func (api *Api) ParseUriL(c *gin.Context, request interface{}, hideDetails ...bool) bool {
-	if err := c.ShouldBindUri(request); err != nil {
-		return api.ValidatorData(c, err, len(hideDetails) > 0 && hideDetails[0], true)
-	}
-	return true
-}
-
-func (api *Api) ParseQueryL(c *gin.Context, request interface{}, hideDetails ...bool) bool {
-	if err := c.ShouldBindQuery(request); err != nil {
-		return api.ValidatorData(c, err, len(hideDetails) > 0 && hideDetails[0], true)
-	}
-	return true
-}
-
-func (api *Api) ParseJSONL(c *gin.Context, request interface{}, hideDetails ...bool) bool {
-	if err := c.ShouldBindJSON(request); err != nil {
-		return api.ValidatorData(c, err, len(hideDetails) > 0 && hideDetails[0], true)
-	}
-	return true
-}
-
-func (api *Api) ParseFormL(c *gin.Context, request interface{}, hideDetails ...bool) bool {
-	if err := c.ShouldBindWith(request, binding.Form); err != nil {
-		return api.ValidatorData(c, err, len(hideDetails) > 0 && hideDetails[0], true)
+		return api.ValidatorData(c, err, len(hideDetails) > 0 && hideDetails[0])
 	}
 	return true
 }
 
 // ValidatorData 参数校验
 // hideDetails 可选择隐藏参数校验详细信息
-func (api *Api) ValidatorData(c *gin.Context, err error, hideDetails bool, log bool) bool {
+func (api *Api) ValidatorData(c *gin.Context, err error, hideDetails bool) bool {
 	if _, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		if eno, ok := err.(validator.ValidationErrors); ok {
 			if !hideDetails {
-				api.Err(c, e.ErrValidation, log, validatorer.TranslateErrData(eno))
+				api.Err(c, http.StatusBadRequest, e.ErrValidation, false, validatorer.TranslateErrData(eno))
 			} else {
-				api.Err(c, e.ErrValidation, log)
+				api.Err(c, http.StatusBadRequest, e.ErrValidation, false)
 			}
 			return false
 		}
 	}
-	api.Err(c, e.ErrBind, log)
+	api.Err(c, http.StatusInternalServerError, e.ErrBind, false)
 	return false
 }

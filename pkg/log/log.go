@@ -14,23 +14,13 @@ var level = zap.NewAtomicLevel()
 // Setup 日志设置
 func Setup() {
 	setLevel()
-	cores := make([]zapcore.Core, 0)
-	// 创建控制台Core记录器接口
-	cores = append(cores, zapcore.NewCore(
-		getConsoleEncoder(),
-		zapcore.Lock(os.Stdout),
-		level,
+	zap.ReplaceGlobals(zap.New(
+		zapcore.NewTee(zapcore.NewCore(
+			getConsoleEncoder(),
+			zapcore.Lock(os.Stdout),
+			level,
+		)),
 	))
-	// Option可选配置
-	options := []zap.Option{
-		zap.AddCaller(),
-	}
-	// 构建一个 zap 实例
-	logger := zap.New(
-		zapcore.NewTee(cores...),
-		options...,
-	)
-	zap.ReplaceGlobals(logger) // 设为全局zap实例
 }
 
 var levels = map[string]zapcore.Level{
