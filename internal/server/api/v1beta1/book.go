@@ -11,17 +11,17 @@ type Book struct {
 }
 
 // GetList
-// @Tags v1beta1
+// @Tags book
 // @Summary 获取书籍列表
 // @Security ApiKeyAuth
 // @Produce json
 // @Success 200 {object} api.Response
 // @Router /api/v1beta1/book [get]
-func (b *Book) GetList(c *gin.Context) {
-	b.Log.Info("路由处理")
-	books, err := b.Svc.GetBookList()
-	if b.HasErrL(c, err) {
+func (g *Book) GetList(c *gin.Context) {
+	g.Log.Info("路由处理")
+	books, err := g.Svc.GetBookList()
+	if g.HasErrL(c, err) {
 		return
 	}
-	b.OK(c, books)
+	g.OK(c, books)
 }

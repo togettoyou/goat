@@ -13,5 +13,6 @@ var (
 	ErrValidation = &errno{code: 20001, msg: "参数校验失败"}
 	ErrBind       = &errno{code: 20002, msg: "参数绑定异常"}
 
+	ErrNotLogin = &errno{code: 20101, msg: "请登录"}
 	// 可自行扩展...
 )
