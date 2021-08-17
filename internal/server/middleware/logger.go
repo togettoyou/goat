@@ -11,7 +11,7 @@ import (
 )
 
 func Logger() gin.HandlerFunc {
-	logger := log.NewModule("middleware.log").L()
+	logger := log.New("middleware").Named("log").L()
 	return func(c *gin.Context) {
 		start := time.Now()
 		c.Next()

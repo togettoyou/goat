@@ -20,6 +20,7 @@ func Setup() {
 			zapcore.Lock(os.Stdout),
 			level,
 		)),
+		zap.AddCaller(),
 	))
 }
 

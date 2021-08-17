@@ -2,21 +2,14 @@ package log
 
 import (
 	"testing"
-
-	"go.uber.org/zap/zapcore"
 )
 
 func TestZap(t *testing.T) {
 	Setup()
 
-	userLog := NewModule("user").L()
-	userLog.Info("hello")
+	logger := New("user")
 
-	loginLog := userLog.Named("login")
-	loginLog.Info("login success")
+	logger.Named("api").L().Info("日志")
+	logger.Named("svc").L().Info("日志")
 
-	level.SetLevel(zapcore.ErrorLevel)
-
-	loginLog.Error("password err")
-	userLog.Info("unknown user err")
 }

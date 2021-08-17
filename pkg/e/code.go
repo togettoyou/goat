@@ -8,6 +8,7 @@ package e
 var (
 	OK                  = &errno{code: 0, msg: "成功"}
 	InternalServerError = &errno{code: 10001, msg: "服务器异常"}
+	DBError             = &errno{code: 10002, msg: "DB异常"}
 
 	ErrValidation = &errno{code: 20001, msg: "参数校验失败"}
 	ErrBind       = &errno{code: 20002, msg: "参数绑定异常"}

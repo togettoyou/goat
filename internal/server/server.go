@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"goat/internal/dao"
 	"goat/internal/server/router"
 	"goat/pkg/conf"
 
@@ -28,11 +29,17 @@ func setGinMode() {
 }
 
 func Start() {
+	// 选择数据源实现
+	store, err := dao.NewMock()
+	//store, err := dao.NewMysql()
+	if err != nil {
+		panic(err)
+	}
 	setGinMode()
 	httpPort := fmt.Sprintf(":%d", conf.Server.HttpPort)
 	server = &http.Server{
 		Addr:           httpPort,
-		Handler:        router.New(),
+		Handler:        router.New(store),
 		ReadTimeout:    conf.Server.ReadTimeout,
 		WriteTimeout:   conf.Server.WriteTimeout,
 		MaxHeaderBytes: 1 << 20,
