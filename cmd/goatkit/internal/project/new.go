@@ -36,13 +36,9 @@ func (p *Project) New(ctx context.Context, dir string, layout string, branch str
 	}
 	fmt.Printf("🚀 Creating service %s, layout repo is %s, please wait a moment.\n\n", p.Name, layout)
 	repo := base.NewRepo(layout, branch)
-	if err := repo.CopyTo(ctx, to, p.Name, []string{".git", ".github", "cmd/goatkit", "LICENSE"}); err != nil {
+	if err := repo.CopyTo(ctx, to, p.Name, []string{".git", ".github", "goatkit", "LICENSE"}); err != nil {
 		return err
 	}
-	os.Rename(
-		path.Join(to, "cmd", "server"),
-		path.Join(to, "cmd", p.Name),
-	)
 	base.Tree(to, dir)
 
 	fmt.Printf("\n🍺 Project creation succeeded %s\n", color.GreenString(p.Name))

@@ -56,7 +56,7 @@ func Run(cmd *cobra.Command, args []string) {
 			dir = path.Join(cmdDir, dir)
 		}
 	}
-	fd := exec.Command("go", "run", "-tags", "docs", ".")
+	fd := exec.Command("go", "run", "-tags", "docs", "cmd/server/main.go")
 	fd.Stdout = os.Stdout
 	fd.Stderr = os.Stderr
 	fd.Dir = dir
