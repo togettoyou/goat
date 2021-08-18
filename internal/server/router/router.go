@@ -3,9 +3,9 @@ package router
 import (
 	"net/http"
 
+	"goat/internal/api"
+	"goat/internal/api/v1beta1"
 	"goat/internal/model"
-	"goat/internal/server/api"
-	"goat/internal/server/api/v1beta1"
 	"goat/internal/server/middleware"
 	"goat/pkg/log"
 
@@ -20,9 +20,7 @@ func New(store *model.Store) *gin.Engine {
 	useMiddleware(r)
 	initDebugRouter(r)
 	initSwagRouter(r)
-
-	v1beta1Group := r.Group("api/v1beta1")
-	initV1beta1(store, v1beta1Group)
+	initV1beta1(store, r)
 	return r
 }
 
@@ -50,26 +48,31 @@ func initSwagRouter(r *gin.Engine) {
 	}
 }
 
-func initV1beta1(store *model.Store, r *gin.RouterGroup) {
-	book := v1beta1.Book{
-		Base: api.New(store, log.New("book").L()),
-	}
-	bookR := r.Group("/book")
+func initV1beta1(store *model.Store, r *gin.Engine) {
+	v1beta1Group := r.Group("api/v1beta1")
 	{
-		bookR.GET("", book.GetList)
+		book := v1beta1.Book{
+			Base: api.New(store, log.New("book").L()),
+		}
+		bookR := v1beta1Group.Group("/book")
+		{
+			bookR.GET("", book.GetList)
+		}
 	}
 
-	example := v1beta1.Example{
-		Base: api.New(nil, log.New("example").L()),
-	}
-	exampleR := r.Group("/example")
 	{
-		exampleR.GET("", example.Get)
-		exampleR.GET("/err", example.Err)
-		exampleR.GET("/uri/:id", example.Uri)
-		exampleR.GET("/query", example.Query)
-		exampleR.POST("/form", example.FormData)
-		exampleR.POST("/json", example.JSON)
+		example := v1beta1.Example{
+			Base: api.New(nil, log.New("example").L()),
+		}
+		exampleR := v1beta1Group.Group("/example")
+		{
+			exampleR.GET("", example.Get)
+			exampleR.GET("/err", example.Err)
+			exampleR.GET("/uri/:id", example.Uri)
+			exampleR.GET("/query", example.Query)
+			exampleR.POST("/form", example.FormData)
+			exampleR.POST("/json", example.JSON)
+		}
 	}
 
 }

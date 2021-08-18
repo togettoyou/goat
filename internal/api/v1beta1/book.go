@@ -1,7 +1,8 @@
 package v1beta1
 
 import (
-	"goat/internal/server/api"
+	"goat/internal/api"
+	"goat/internal/svc"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,11 +18,13 @@ type Book struct {
 // @Produce json
 // @Success 200 {object} api.Response
 // @Router /api/v1beta1/book [get]
-func (g *Book) GetList(c *gin.Context) {
+func (g Book) GetList(c *gin.Context) {
+	bookSvc := svc.Book{}
+	g.MakeContext(c).MakeService(&bookSvc.Service)
 	g.Log.Info("路由处理")
-	books, err := g.Svc.GetBookList()
-	if g.HasErrL(c, err) {
+	books, err := bookSvc.GetList()
+	if g.HasErrL(err) {
 		return
 	}
-	g.OK(c, books)
+	g.OK(books)
 }
