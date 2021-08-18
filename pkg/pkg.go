@@ -1,8 +1,8 @@
 package pkg
 
 import (
-	"goat/pkg/conf"
-	"goat/pkg/log"
+	"goat-layout/pkg/conf"
+	"goat-layout/pkg/log"
 )
 
 // Reset all

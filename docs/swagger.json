@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "description": "🐐 基于 gin + gorm 的轻量级工程项目",
-        "title": "goat",
+        "title": "接口文档",
         "contact": {},
         "license": {},
         "version": "1.0"

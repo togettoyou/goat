@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"goat/pkg/log"
+	"goat-layout/pkg/log"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"

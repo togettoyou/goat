@@ -1,7 +1,7 @@
 package dao
 
 import (
-	"goat/internal/model"
+	"goat-layout/internal/model"
 
 	"gorm.io/gorm"
 )

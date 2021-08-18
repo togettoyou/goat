@@ -1,8 +1,8 @@
 package v1beta1
 
 import (
-	"goat/internal/api"
-	"goat/internal/svc"
+	"goat-layout/internal/api"
+	"goat-layout/internal/svc"
 
 	"github.com/gin-gonic/gin"
 )

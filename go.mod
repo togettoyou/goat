@@ -1,4 +1,4 @@
-module goat
+module goat-layout
 
 go 1.15
 

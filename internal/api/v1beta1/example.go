@@ -3,8 +3,8 @@ package v1beta1
 import (
 	"errors"
 
-	"goat/internal/api"
-	"goat/pkg/e"
+	"goat-layout/internal/api"
+	"goat-layout/pkg/e"
 
 	"github.com/gin-gonic/gin"
 )

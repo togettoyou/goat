@@ -24,7 +24,7 @@ info:
   contact: {}
   description: "\U0001F410 基于 gin + gorm 的轻量级工程项目"
   license: {}
-  title: goat
+  title: 接口文档
   version: "1.0"
 paths:
   /api/v1beta1/book:

@@ -1,9 +1,9 @@
 package dao
 
 import (
-	"goat/internal/model"
-	"goat/pkg/conf"
-	"goat/pkg/log"
+	"goat-layout/internal/model"
+	"goat-layout/pkg/conf"
+	"goat-layout/pkg/log"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

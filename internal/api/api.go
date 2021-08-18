@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"net/http"
 
-	"goat/internal/model"
-	"goat/internal/server/middleware"
-	"goat/internal/svc"
-	"goat/pkg/e"
-	"goat/pkg/validatorer"
+	"goat-layout/internal/model"
+	"goat-layout/internal/server/middleware"
+	"goat-layout/internal/svc"
+	"goat-layout/pkg/e"
+	"goat-layout/pkg/validatorer"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"

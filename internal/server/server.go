@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"goat/internal/dao"
-	"goat/internal/server/router"
-	"goat/pkg/conf"
+	"goat-layout/internal/dao"
+	"goat-layout/internal/server/router"
+	"goat-layout/pkg/conf"
 
 	"github.com/gin-gonic/gin"
 )

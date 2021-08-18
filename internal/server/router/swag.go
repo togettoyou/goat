@@ -1,9 +1,10 @@
-//+build docs
+//go:build docs
+// +build docs
 
 package router
 
 import (
-	_ "goat/docs"
+	_ "goat-layout/docs"
 
 	swagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"

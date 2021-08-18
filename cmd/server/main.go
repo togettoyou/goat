@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"os"
 
-	"goat/internal/server"
-	"goat/pkg"
-	"goat/pkg/conf"
-	"goat/pkg/log"
-	"goat/pkg/validatorer"
-	"goat/pkg/version"
+	"goat-layout/internal/server"
+	"goat-layout/pkg"
+	"goat-layout/pkg/conf"
+	"goat-layout/pkg/log"
+	"goat-layout/pkg/validatorer"
+	"goat-layout/pkg/version"
 
 	"github.com/spf13/pflag"
 )
@@ -33,7 +33,7 @@ func setup() {
 	validatorer.Setup()
 }
 
-// @title goat
+// @title 接口文档
 // @version 1.0
 // @description 🐐 基于 gin + gorm 的轻量级工程项目
 // @securityDefinitions.apikey ApiKeyAuth

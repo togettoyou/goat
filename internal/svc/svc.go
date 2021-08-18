@@ -1,7 +1,7 @@
 package svc
 
 import (
-	"goat/internal/model"
+	"goat-layout/internal/model"
 
 	"go.uber.org/zap"
 )

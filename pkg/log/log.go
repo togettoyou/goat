@@ -3,7 +3,7 @@ package log
 import (
 	"os"
 
-	"goat/pkg/conf"
+	"goat-layout/pkg/conf"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

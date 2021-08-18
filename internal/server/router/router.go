@@ -3,11 +3,11 @@ package router
 import (
 	"net/http"
 
-	"goat/internal/api"
-	"goat/internal/api/v1beta1"
-	"goat/internal/model"
-	"goat/internal/server/middleware"
-	"goat/pkg/log"
+	"goat-layout/internal/api"
+	"goat-layout/internal/api/v1beta1"
+	"goat-layout/internal/model"
+	"goat-layout/internal/server/middleware"
+	"goat-layout/pkg/log"
 
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"

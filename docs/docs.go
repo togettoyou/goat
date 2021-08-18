@@ -265,7 +265,7 @@ var SwaggerInfo = swaggerInfo{
 	Host:        "",
 	BasePath:    "",
 	Schemes:     []string{},
-	Title:       "goat",
+	Title:       "接口文档",
 	Description: "🐐 基于 gin + gorm 的轻量级工程项目",
 }
 

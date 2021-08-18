@@ -1,8 +1,8 @@
 package svc
 
 import (
-	"goat/internal/model"
-	"goat/pkg/e"
+	"goat-layout/internal/model"
+	"goat-layout/pkg/e"
 )
 
 // Book 书籍业务
