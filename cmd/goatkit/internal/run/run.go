@@ -9,7 +9,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/AlecAivazis/survey/v2"
 	"github.com/spf13/cobra"
 )
 
@@ -23,43 +22,10 @@ var CmdRun = &cobra.Command{
 
 // Run run project.
 func Run(cmd *cobra.Command, args []string) {
-	var dir string
-	if len(args) > 0 {
-		dir = args[0]
-	}
-	base, err := os.Getwd()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "\033[31mERROR: %s\033[m\n", err)
-		return
-	}
-	if dir == "" {
-		// find the directory containing the cmd/*
-		cmdDir, cmdPath, err := findCMD(base)
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "\033[31mERROR: %s\033[m\n", err)
-			return
-		}
-		if len(cmdPath) == 0 {
-			fmt.Fprintf(os.Stderr, "\033[31mERROR: %s\033[m\n", "The cmd directory cannot be found in the current directory")
-			return
-		} else if len(cmdPath) == 1 {
-			dir = path.Join(cmdDir, cmdPath[0])
-		} else {
-			prompt := &survey.Select{
-				Message: "Which directory do you want to run?",
-				Options: cmdPath,
-			}
-			survey.AskOne(prompt, &dir)
-			if dir == "" {
-				return
-			}
-			dir = path.Join(cmdDir, dir)
-		}
-	}
+	fmt.Println("go", "run", "-tags", "docs", "cmd/server/main.go")
 	fd := exec.Command("go", "run", "-tags", "docs", "cmd/server/main.go")
 	fd.Stdout = os.Stdout
 	fd.Stderr = os.Stderr
-	fd.Dir = dir
 	if err := fd.Run(); err != nil {
 		fmt.Fprintf(os.Stderr, "\033[31mERROR: %s\033[m\n", err.Error())
 		return
