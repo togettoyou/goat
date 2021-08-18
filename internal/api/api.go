@@ -47,7 +47,7 @@ func (b *Base) MakeService(svc *svc.Service) *Base {
 
 func (b *Base) Named(name string) *Base {
 	b.log = b.log.Named(name)
-	b.Log = b.Log.Named(name)
+	b.Log = b.log.Named("api")
 	return b
 }
 

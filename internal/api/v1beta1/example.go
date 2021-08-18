@@ -2,7 +2,6 @@ package v1beta1
 
 import (
 	"errors"
-	"time"
 
 	"goat/internal/api"
 	"goat/pkg/e"
@@ -22,8 +21,10 @@ type Example struct {
 // @Router /api/v1beta1/example [get]
 func (g Example) Get(c *gin.Context) {
 	g.Named("test").MakeContext(c)
-	time.Sleep(5 * time.Second)
+	g.Log.Debug("Get请求")
+	g.Log.Warn("Get请求")
 	g.Log.Info("Get请求")
+	g.Log.Error("Get请求")
 	g.OK("打印日志")
 }
 

@@ -20,7 +20,7 @@ type Book struct {
 // @Router /api/v1beta1/book [get]
 func (g Book) GetList(c *gin.Context) {
 	bookSvc := svc.Book{}
-	g.MakeContext(c).MakeService(&bookSvc.Service)
+	g.Named("GetList").MakeContext(c).MakeService(&bookSvc.Service)
 	g.Log.Info("路由处理")
 	books, err := bookSvc.GetList()
 	if g.HasErrL(err) {
