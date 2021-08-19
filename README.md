@@ -28,3 +28,15 @@ goatkit new helloworld
 # 更多帮助
 goatkit -h
 ```
+
+# 文档
+
+[api 层](internal/api/README.md)
+
+[svc 层](internal/svc/README.md)
+
+[model 层](internal/model/README.md)
+
+[dao 层](internal/dao/README.md)
+
+[router 层](internal/server/router/README.md)
