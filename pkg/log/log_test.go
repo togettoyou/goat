@@ -5,7 +5,7 @@ import (
 )
 
 func TestZap(t *testing.T) {
-	Setup()
+	Setup("debug")
 
 	logger := New("user")
 

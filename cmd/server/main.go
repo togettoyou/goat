@@ -29,7 +29,7 @@ func setup() {
 		}
 		server.Reset()
 	})
-	log.Setup()
+	log.Setup(conf.Log.Level)
 	validatorer.Setup()
 }
 

@@ -3,8 +3,6 @@ package log
 import (
 	"os"
 
-	"goat-layout/pkg/conf"
-
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -12,8 +10,8 @@ import (
 var level = zap.NewAtomicLevel()
 
 // Setup 日志设置
-func Setup() {
-	setLevel()
+func Setup(lev string) {
+	setLevel(lev)
 	zap.ReplaceGlobals(zap.New(
 		zapcore.NewTee(zapcore.NewCore(
 			getConsoleEncoder(),
@@ -33,8 +31,8 @@ var levels = map[string]zapcore.Level{
 }
 
 // setLevel 日志级别设置
-func setLevel() {
-	if l, ok := levels[conf.Log.Level]; ok {
+func setLevel(lev string) {
+	if l, ok := levels[lev]; ok {
 		level.SetLevel(l)
 	} else {
 		level.SetLevel(zapcore.DebugLevel)
@@ -49,6 +47,6 @@ func getConsoleEncoder() zapcore.Encoder {
 	return zapcore.NewConsoleEncoder(encoderConfig)
 }
 
-func Reset() {
-	setLevel()
+func Reset(lev string) {
+	setLevel(lev)
 }
