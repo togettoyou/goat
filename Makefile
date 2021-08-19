@@ -3,7 +3,7 @@
 # 生成的二进制文件名
 BINARY_NAME="go-server"
 # 项目包名
-MOD_NAME="goat"
+MOD_NAME="goat-layout"
 # run 参数
 TARGET=$(out)
 
