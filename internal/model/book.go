@@ -8,5 +8,6 @@ type Book struct {
 
 // BookStore 定义实体 db 操作接口
 type BookStore interface {
+	Create(name, url string) error
 	List() ([]Book, error)
 }

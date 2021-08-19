@@ -28,3 +28,29 @@ func (g Book) GetList(c *gin.Context) {
 	}
 	g.OK(books)
 }
+
+type bookBody struct {
+	Name string `json:"name" binding:"required"`
+	Url  string `json:"url" binding:"required"`
+}
+
+// Add
+// @Tags book
+// @Summary 新增书籍
+// @Security ApiKeyAuth
+// @Produce json
+// @Param data body bookBody true "测试请求json参数"
+// @Success 200 {object} api.Response
+// @Router /api/v1beta1/book [post]
+func (g Book) Add(c *gin.Context) {
+	var body bookBody
+	bookSvc := svc.Book{}
+	if !g.Named("Add").MakeContext(c).MakeService(&bookSvc.Service).ParseJSON(&body) {
+		return
+	}
+	g.Log.Info("路由处理")
+	if g.HasErrL(bookSvc.Add(body.Name, body.Url)) {
+		return
+	}
+	g.OK()
+}

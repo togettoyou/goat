@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
-	github.com/fsnotify/fsnotify v1.4.9
+	github.com/fsnotify/fsnotify v1.5.0
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/pprof v1.3.0
 	github.com/gin-gonic/gin v1.7.4
@@ -18,5 +18,6 @@ require (
 	github.com/swaggo/swag v1.7.1
 	go.uber.org/zap v1.19.0
 	gorm.io/driver/mysql v1.1.2
+	gorm.io/driver/sqlite v1.1.4
 	gorm.io/gorm v1.21.13
 )

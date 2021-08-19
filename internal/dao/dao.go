@@ -6,6 +6,7 @@ import (
 	"goat-layout/pkg/log"
 
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 )
@@ -16,6 +17,34 @@ const tablePrefix = "sys_"
 func NewMock() (*model.Store, error) {
 	return &model.Store{
 		Book: newBook2(),
+	}, nil
+}
+
+// NewSqlite 使用 Sqlite 数据库
+func NewSqlite() (*model.Store, error) {
+	db, err := gorm.Open(
+		sqlite.Open("./data.db"), // 数据库文件存放路径
+		&gorm.Config{
+			NamingStrategy: schema.NamingStrategy{
+				TablePrefix:   tablePrefix, // 表名前缀，`User` 的表名应该是 `sys_users`
+				SingularTable: true,        // 使用单数表名，启用该选项，此时，`User` 的表名应该是 `sys_user`
+			},
+			Logger: log.NewGormLogger(log.New("gorm").L()),
+		})
+	if err != nil {
+		return nil, err
+	}
+
+	err = db.AutoMigrate(
+		/*数据库实体模型*/
+		&model.Book{},
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.Store{
+		Book: newBook1(db),
 	}, nil
 }
 

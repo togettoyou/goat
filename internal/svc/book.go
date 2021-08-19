@@ -20,3 +20,14 @@ func (b *Book) GetList() ([]model.Book, error) {
 	}
 	return books, nil
 }
+
+func (b *Book) Add(name, url string) error {
+	b.log.Info("业务处理")
+	// 使用store调用dao层
+	err := b.store.Book.Create(name, url)
+	if err != nil {
+		// 返回包装错误，包含调用栈信息
+		return e.New(e.DBError, err)
+	}
+	return nil
+}

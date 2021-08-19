@@ -20,6 +20,16 @@ definitions:
     - email
     - username
     type: object
+  v1beta1.bookBody:
+    properties:
+      name:
+        type: string
+      url:
+        type: string
+    required:
+    - name
+    - url
+    type: object
 info:
   contact: {}
   description: "\U0001F410 基于 gin + gorm 的轻量级工程项目"
@@ -39,6 +49,26 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: 获取书籍列表
+      tags:
+      - book
+    post:
+      parameters:
+      - description: 测试请求json参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/v1beta1.bookBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 新增书籍
       tags:
       - book
   /api/v1beta1/example:

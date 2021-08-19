@@ -26,18 +26,35 @@ func (b *book1) List() ([]model.Book, error) {
 	return books, nil
 }
 
+func (b *book1) Create(name, url string) error {
+	return b.db.Create(&model.Book{
+		Name: name,
+		Url:  url,
+	}).Error
+}
+
+var books = []model.Book{
+	{
+		Name: "Go语言圣经（中文版）",
+		Url:  "https://books.studygolang.com/gopl-zh/",
+	},
+	{
+		Name: "Go语言高级编程(Advanced Go Programming)",
+		Url:  "https://chai2010.cn/advanced-go-programming-book/",
+	},
+}
+
 type book2 struct {
 }
 
 func (b *book2) List() ([]model.Book, error) {
-	return []model.Book{
-		{
-			Name: "Go语言圣经（中文版）",
-			Url:  "https://books.studygolang.com/gopl-zh/",
-		},
-		{
-			Name: "Go语言高级编程(Advanced Go Programming)",
-			Url:  "https://chai2010.cn/advanced-go-programming-book/",
-		},
-	}, nil
+	return books, nil
+}
+
+func (b *book2) Create(name, url string) error {
+	books = append(books, model.Book{
+		Name: name,
+		Url:  url,
+	})
+	return nil
 }

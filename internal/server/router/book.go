@@ -16,5 +16,6 @@ func registerBookRouter(store *model.Store, r *gin.RouterGroup) {
 
 	{
 		bookR.GET("", book.GetList)
+		bookR.POST("", book.Add)
 	}
 }
