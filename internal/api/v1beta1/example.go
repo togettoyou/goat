@@ -130,9 +130,8 @@ type JSONBody struct {
 // @Success 200 {object} api.Response
 // @Router /api/v1beta1/example/json [post]
 func (g Example) JSON(c *gin.Context) {
-	g.MakeContext(c)
 	var body JSONBody
-	if !g.ParseJSON(&body) {
+	if !g.MakeContext(c).ParseJSON(&body) {
 		return
 	}
 	g.OK(body)

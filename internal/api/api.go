@@ -8,6 +8,7 @@ import (
 	"goat-layout/internal/server/middleware"
 	"goat-layout/internal/svc"
 	"goat-layout/pkg/e"
+	logpkg "goat-layout/pkg/log"
 	"goat-layout/pkg/validatorer"
 
 	"github.com/gin-gonic/gin"
@@ -26,6 +27,9 @@ type Base struct {
 }
 
 func New(store *model.Store, log *zap.Logger) Base {
+	if log == nil {
+		log = logpkg.New("").L()
+	}
 	return Base{
 		log:   log,
 		store: store,
@@ -41,11 +45,17 @@ func (b *Base) MakeContext(c *gin.Context) *Base {
 
 // MakeService 设置业务对象
 func (b *Base) MakeService(svc *svc.Service) *Base {
+	if svc == nil {
+		return b
+	}
 	svc.New(b.store, b.log)
 	return b
 }
 
 func (b *Base) Named(name string) *Base {
+	if b.log == nil {
+		b.log = logpkg.New("").L()
+	}
 	b.log = b.log.Named(name)
 	b.Log = b.log.Named("api")
 	return b

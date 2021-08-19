@@ -2,6 +2,7 @@ package svc
 
 import (
 	"goat-layout/internal/model"
+	logpkg "goat-layout/pkg/log"
 
 	"go.uber.org/zap"
 )
@@ -13,12 +14,18 @@ type Service struct {
 }
 
 func (s *Service) New(store *model.Store, log *zap.Logger) *Service {
+	if log == nil {
+		log = logpkg.New("").L()
+	}
 	s.store = store
 	s.log = log.Named("svc")
 	return s
 }
 
 func (s *Service) named(name string) *Service {
+	if s.log == nil {
+		s.log = logpkg.New("").L()
+	}
 	s.log = s.log.Named(name)
 	return s
 }
