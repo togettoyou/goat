@@ -31,12 +31,9 @@ goatkit -h
 
 # 文档
 
-[api 层](internal/api/README.md)
+项目的依赖路径为: [model 层](internal/model/README.md) -> [dao 层](internal/dao/README.md) -> [svc 层](internal/svc/README.md)
+-> [api 层](internal/api/README.md)
 
-[svc 层](internal/svc/README.md)
+其中 model struct 串联各个层
 
-[model 层](internal/model/README.md)
-
-[dao 层](internal/dao/README.md)
-
-[router 层](internal/server/router/README.md)
+[router 层](internal/server/router/README.md) 负责路由注册
