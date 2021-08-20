@@ -53,6 +53,8 @@ func Setup() {
 		}
 		registerTagNameFunc()
 		registerValidationTranslation(vt)
+	} else {
+		panic("validator setup fail")
 	}
 }
 

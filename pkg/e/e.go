@@ -21,22 +21,35 @@ type codeError struct {
 	err  error
 }
 
+func (e *codeError) Add(msg string) error {
+	e.msg += ": " + msg
+	return e
+}
+
+func (e *codeError) Addf(format string, args ...interface{}) error {
+	e.msg += fmt.Sprintf(format, args...)
+	return e
+}
+
 func (e *codeError) Error() string {
 	return fmt.Sprintf("code = %d msg = %s err = %s", e.code, e.msg, e.err)
 }
 
 // New 新建错误
-func New(errno *errno, err error) error {
+func New(errno *errno, err error) *codeError {
+	return &codeError{code: errno.code, msg: errno.msg, err: err}
+}
+
+// NewWithStack 新建错误，附加调用栈
+func NewWithStack(errno *errno, err error) error {
 	return errors.WithStack(&codeError{code: errno.code, msg: errno.msg, err: err})
 }
 
 // Wrap 包装错误信息，附加调用栈
 // 第二个参数只能是 string，也可以不传，大部分情况不用传
-func Wrap(err error, args ...interface{}) error {
+func Wrap(err error, args ...string) error {
 	if len(args) >= 1 {
-		if msg, ok := args[0].(string); ok {
-			return errors.Wrap(err, msg)
-		}
+		return errors.Wrap(err, args[0])
 	}
 
 	return errors.Wrap(err, "")
@@ -59,5 +72,5 @@ func DecodeErr(err error) (int, string) {
 	case *codeError:
 		return typed.code, typed.msg
 	}
-	return InternalServerError.code, err.Error()
+	return ServerError.code, err.Error()
 }

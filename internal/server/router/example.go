@@ -15,7 +15,7 @@ func registerExampleRouter(r *gin.RouterGroup) {
 
 	{
 		exampleR.GET("", example.Get)
-		exampleR.GET("/err", example.Err)
+		exampleR.GET("/err/:id", example.Err)
 		exampleR.GET("/uri/:id", example.Uri)
 		exampleR.GET("/query", example.Query)
 		exampleR.POST("/form", example.FormData)

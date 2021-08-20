@@ -6,8 +6,6 @@
 
 1. `svc` 目录下直接存放业务处理文件，例：`svc/book.go`
 
-
-
 开发教程：
 
 1. 创建业务对象结构体，必须内嵌 `Service` 结构体
@@ -18,7 +16,7 @@
    }
    ```
 
-2. 方法声明，推荐使用指针接收器，避免不必要的拷贝，业务层的错误必须使用 `e.New` 或 `e.Wrap` 包装后返回
+2. 方法声明，推荐使用指针接收器，避免不必要的拷贝，业务层的错误必须使用 `pkg/e` 包实现
 
    ```go
    func (b *Book) GetList() ([]model.Book, error) {
@@ -26,8 +24,8 @@
    	// 使用store调用dao层
    	books, err := b.store.Book.List()
    	if err != nil {
-   		// 返回包装错误，包含调用栈信息
-   		return nil, e.New(e.DBError, err)
+   		// 返回错误包含调用栈信息
+   		return nil, e.NewWithStack(e.DBError, err)
    	}
    	return books, nil
    }

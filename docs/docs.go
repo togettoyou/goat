@@ -68,7 +68,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1beta1.bookBody"
+                            "$ref": "#/definitions/req.Book"
                         }
                     }
                 ],
@@ -101,7 +101,7 @@ var doc = `{
                 }
             }
         },
-        "/api/v1beta1/example/err": {
+        "/api/v1beta1/example/err/{id}": {
             "get": {
                 "produces": [
                     "application/json"
@@ -110,6 +110,15 @@ var doc = `{
                     "example"
                 ],
                 "summary": "Err请求",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id值",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -169,7 +178,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1beta1.JSONBody"
+                            "$ref": "#/definitions/req.JSONBody"
                         }
                     }
                 ],
@@ -256,7 +265,22 @@ var doc = `{
                 }
             }
         },
-        "v1beta1.JSONBody": {
+        "req.Book": {
+            "type": "object",
+            "required": [
+                "name",
+                "url"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "req.JSONBody": {
             "type": "object",
             "required": [
                 "email",
@@ -270,21 +294,6 @@ var doc = `{
                 "username": {
                     "type": "string",
                     "example": "admin"
-                }
-            }
-        },
-        "v1beta1.bookBody": {
-            "type": "object",
-            "required": [
-                "name",
-                "url"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "url": {
-                    "type": "string"
                 }
             }
         }

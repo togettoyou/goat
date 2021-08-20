@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"goat-layout/internal/api"
+	"goat-layout/internal/model/req"
 	"goat-layout/pkg/e"
 
 	"github.com/gin-gonic/gin"
@@ -28,31 +29,6 @@ func (g Example) Get(c *gin.Context) {
 	g.OK("打印日志")
 }
 
-// Err
-// @Tags example
-// @Summary Err请求
-// @Produce json
-// @Success 200 {object} api.Response
-// @Router /api/v1beta1/example/err [get]
-func (g Example) Err(c *gin.Context) {
-	g.MakeContext(c)
-
-	// 这里模拟业务层处理业务后返回了一个err，注：err应该在svc层包装
-	// err := e.ErrNotLogin // 返回的错误没有包装 ❌
-	// err := e.Wrap(e.ErrNotLogin) // 返回的错误使用Wrap包装 ✔
-	err := e.New(e.ErrNotLogin, errors.New("第三方错误或系统错误")) // 返回的错误是使用New创建的 ✔
-
-	// 判断错误，g.HasErr不打印错误消息，g.HasErrL会打印错误消息
-	if g.HasErrL(err) {
-		return
-	}
-	g.OK(c)
-}
-
-type UriArgs struct {
-	ID uint `json:"id" uri:"id" binding:"required,min=10"`
-}
-
 // Uri
 // @Tags example
 // @Summary uri参数请求
@@ -64,15 +40,11 @@ type UriArgs struct {
 func (g Example) Uri(c *gin.Context) {
 	g.MakeContext(c)
 	//id := c.Param("id")
-	var args UriArgs
+	var args req.UriArgs
 	if !g.ParseUri(&args) {
 		return
 	}
 	g.OK(args)
-}
-
-type QueryArgs struct {
-	Email string `json:"email" form:"email" binding:"required,email"`
 }
 
 // Query
@@ -86,15 +58,11 @@ type QueryArgs struct {
 func (g Example) Query(c *gin.Context) {
 	g.MakeContext(c)
 	//email := c.Query("email")
-	var args QueryArgs
+	var args req.QueryArgs
 	if !g.ParseQuery(&args) {
 		return
 	}
 	g.OK(args)
-}
-
-type FormArgs struct {
-	Email string `json:"email" form:"email" binding:"required,email"`
 }
 
 // FormData
@@ -109,16 +77,11 @@ type FormArgs struct {
 func (g Example) FormData(c *gin.Context) {
 	g.MakeContext(c)
 	//email := c.PostForm("email")
-	var args FormArgs
+	var args req.FormArgs
 	if !g.ParseForm(&args) {
 		return
 	}
 	g.OK(args)
-}
-
-type JSONBody struct {
-	Email    string `json:"email" binding:"required,email" example:"admin@qq.com"`
-	Username string `json:"username" binding:"required,checkUsername" example:"admin"`
 }
 
 // JSON
@@ -126,13 +89,47 @@ type JSONBody struct {
 // @Summary JSON参数请求
 // @Description 邮箱、用户名校验
 // @Produce  json
-// @Param data body JSONBody true "测试请求json参数"
+// @Param data body req.JSONBody true "测试请求json参数"
 // @Success 200 {object} api.Response
 // @Router /api/v1beta1/example/json [post]
 func (g Example) JSON(c *gin.Context) {
-	var body JSONBody
+	var body req.JSONBody
 	if !g.MakeContext(c).ParseJSON(&body) {
 		return
 	}
 	g.OK(body)
+}
+
+// Err
+// @Tags example
+// @Summary Err请求
+// @Produce json
+// @Param id path int true "id值"
+// @Success 200 {object} api.Response
+// @Router /api/v1beta1/example/err/{id} [get]
+func (g Example) Err(c *gin.Context) {
+	var (
+		args     req.ErrArgs
+		err      error
+		otherErr = errors.New("第三方错误或系统错误")
+	)
+	if !g.MakeContext(c).ParseUri(&args) {
+		return
+	}
+	switch args.ID {
+	case 1:
+		err = e.ErrNotLogin
+	case 2:
+		err = e.New(e.ErrNotLogin, otherErr)
+	case 3:
+		err = e.NewWithStack(e.ErrNotLogin, otherErr)
+	case 4:
+		err = e.New(e.ErrNotLogin, otherErr).Add("返回客户端的额外信息")
+	case 5:
+		err = e.Wrap(e.New(e.ErrNotLogin, otherErr).Add("返回客户端的额外信息"), "日志打印的额外信息")
+	}
+	if g.HasErr(err) {
+		return
+	}
+	g.OK("需要打印错误堆栈信息，请使用3或5方式")
 }
