@@ -44,11 +44,12 @@ func (b *Base) MakeContext(c *gin.Context) *Base {
 }
 
 // MakeService 初始化业务对象
-func (b *Base) MakeService(svc *svc.Service) *Base {
-	if svc == nil {
-		return b
+func (b *Base) MakeService(svc ...*svc.Service) *Base {
+	for _, service := range svc {
+		if service != nil {
+			service.New(b.store, b.log)
+		}
 	}
-	svc.New(b.store, b.log)
 	return b
 }
 

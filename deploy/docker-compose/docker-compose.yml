@@ -1,9 +1,8 @@
 version: '3'
 services:
   server:
-    build: .
     image: go-server:v1
     ports:
-      - "8888:8888"
+      - "32288:8888"
     volumes:
       - $PWD/conf:/root/togettoyou/conf

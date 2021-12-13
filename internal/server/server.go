@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"goat-layout/internal/dao"
 	"goat-layout/internal/server/router"
@@ -41,8 +42,8 @@ func Start() {
 	server = &http.Server{
 		Addr:           httpPort,
 		Handler:        router.New(store),
-		ReadTimeout:    conf.Server.ReadTimeout,
-		WriteTimeout:   conf.Server.WriteTimeout,
+		ReadTimeout:    time.Duration(conf.Server.ReadTimeout) * time.Second,
+		WriteTimeout:   time.Duration(conf.Server.WriteTimeout) * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 	if conf.Server.TLS {
@@ -58,6 +59,6 @@ func Start() {
 
 func Reset() {
 	setGinMode()
-	server.ReadTimeout = conf.Server.ReadTimeout
-	server.WriteTimeout = conf.Server.WriteTimeout
+	server.ReadTimeout = time.Duration(conf.Server.ReadTimeout) * time.Second
+	server.WriteTimeout = time.Duration(conf.Server.WriteTimeout) * time.Second
 }

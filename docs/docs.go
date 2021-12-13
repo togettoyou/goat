@@ -323,7 +323,7 @@ var SwaggerInfo = swaggerInfo{
 	BasePath:    "",
 	Schemes:     []string{},
 	Title:       "接口文档",
-	Description: "🐐 基于 gin + gorm 的轻量级工程项目",
+	Description: "基于 gin 进行快速构建 RESTFUL API 的项目框架",
 }
 
 type s struct{}

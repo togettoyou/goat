@@ -3,10 +3,11 @@ package router
 import (
 	"net/http"
 
-	"github.com/gin-contrib/pprof"
-	"github.com/gin-gonic/gin"
 	"goat-layout/internal/model"
 	"goat-layout/internal/server/middleware"
+
+	"github.com/gin-contrib/pprof"
+	"github.com/gin-gonic/gin"
 )
 
 var swag gin.HandlerFunc

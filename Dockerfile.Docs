@@ -3,7 +3,7 @@ ENV GO111MODULE=on
 ENV GOPROXY https://goproxy.cn,direct
 COPY . /root/togettoyou/
 WORKDIR /root/togettoyou/
-RUN make
+RUN make docs
 
 FROM scratch
 COPY --from=builder /root/togettoyou/go-server /root/togettoyou/

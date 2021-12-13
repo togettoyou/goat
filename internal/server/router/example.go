@@ -1,10 +1,11 @@
 package router
 
 import (
-	"github.com/gin-gonic/gin"
 	"goat-layout/internal/api"
 	"goat-layout/internal/api/v1beta1"
 	"goat-layout/pkg/log"
+
+	"github.com/gin-gonic/gin"
 )
 
 func registerExampleRouter(r *gin.RouterGroup) {

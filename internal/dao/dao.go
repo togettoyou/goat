@@ -1,6 +1,8 @@
 package dao
 
 import (
+	"time"
+
 	"goat-layout/internal/model"
 	"goat-layout/pkg/conf"
 	"goat-layout/pkg/log"
@@ -10,8 +12,6 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 )
-
-const tablePrefix = "sys_"
 
 // NewMock 模拟
 func NewMock() (*model.Store, error) {
@@ -26,8 +26,8 @@ func NewSqlite() (*model.Store, error) {
 		sqlite.Open("./data.db"), // 数据库文件存放路径
 		&gorm.Config{
 			NamingStrategy: schema.NamingStrategy{
-				TablePrefix:   tablePrefix, // 表名前缀，`User` 的表名应该是 `sys_users`
-				SingularTable: true,        // 使用单数表名，启用该选项，此时，`User` 的表名应该是 `sys_user`
+				TablePrefix:   "sys_", // 表名前缀，`User` 的表名应该是 `sys_users`
+				SingularTable: true,   // 使用单数表名，启用该选项，此时，`User` 的表名应该是 `sys_user`
 			},
 			Logger: log.NewGormLogger(log.New("gorm").L()),
 		})
@@ -61,8 +61,8 @@ func NewMysql() (*model.Store, error) {
 		}),
 		&gorm.Config{
 			NamingStrategy: schema.NamingStrategy{
-				TablePrefix:   tablePrefix, // 表名前缀，`User` 的表名应该是 `sys_users`
-				SingularTable: true,        // 使用单数表名，启用该选项，此时，`User` 的表名应该是 `sys_user`
+				TablePrefix:   "sys_", // 表名前缀，`User` 的表名应该是 `sys_users`
+				SingularTable: true,   // 使用单数表名，启用该选项，此时，`User` 的表名应该是 `sys_user`
 			},
 			Logger: log.NewGormLogger(log.New("gorm").L()),
 		})
@@ -76,7 +76,7 @@ func NewMysql() (*model.Store, error) {
 	}
 	sqlDB.SetMaxIdleConns(conf.Mysql.MaxIdle)
 	sqlDB.SetMaxOpenConns(conf.Mysql.MaxOpen)
-	sqlDB.SetConnMaxLifetime(conf.Mysql.MaxLifetime)
+	sqlDB.SetConnMaxLifetime(time.Duration(conf.Mysql.MaxLifetime) * time.Minute)
 	err = sqlDB.Ping()
 	if err != nil {
 		return nil, err

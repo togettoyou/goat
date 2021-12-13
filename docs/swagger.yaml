@@ -32,7 +32,7 @@ definitions:
     type: object
 info:
   contact: {}
-  description: "\U0001F410 基于 gin + gorm 的轻量级工程项目"
+  description: 基于 gin 进行快速构建 RESTFUL API 的项目框架
   license: {}
   title: 接口文档
   version: "1.0"
