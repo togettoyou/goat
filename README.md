@@ -28,7 +28,7 @@ goatkit run
 goatkit swag
 
 # 使用镜像代理
-export GOAT_LAYOUT_REPO=https://ghproxy.com/https://github.com/togettoyou/goat.git
+export GOAT_LAYOUT_REPO=https://github.com.cnpmjs.org/togettoyou/goat.git
 goatkit new helloworld
 
 # 更多帮助
