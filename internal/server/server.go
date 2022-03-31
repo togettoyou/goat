@@ -1,8 +1,10 @@
 package server
 
 import (
+	"crypto/tls"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"goat-layout/internal/dao"
@@ -10,6 +12,7 @@ import (
 	"goat-layout/pkg/conf"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/acme/autocert"
 )
 
 var (
@@ -47,7 +50,27 @@ func Start() {
 		MaxHeaderBytes: 1 << 20,
 	}
 	if conf.Server.TLS {
-		if err := server.ListenAndServeTLS(conf.Server.Crt, conf.Server.Key); err != nil {
+		server.Addr = ":https"
+		certManager := autocert.Manager{
+			Prompt:     autocert.AcceptTOS,
+			Cache:      autocert.DirCache("tls"),
+			HostPolicy: autocert.HostWhitelist(strings.TrimPrefix(conf.Server.URL, "https://")),
+			Email:      conf.Server.ACMEEmail,
+		}
+		if conf.Server.AutoTLS {
+			server.TLSConfig = &tls.Config{GetCertificate: certManager.GetCertificate}
+			fmt.Println(conf.Server.URL)
+		} else {
+			server.TLSConfig = &tls.Config{GetCertificate: func(info *tls.ClientHelloInfo) (*tls.Certificate, error) {
+				certificate, err := tls.LoadX509KeyPair(conf.Server.Crt, conf.Server.Key)
+				if err != nil {
+					return nil, err
+				}
+				return &certificate, nil
+			}}
+		}
+		go http.ListenAndServe(":http", certManager.HTTPHandler(nil))
+		if err := server.ListenAndServeTLS("", ""); err != nil {
 			panic(err)
 		}
 	} else {

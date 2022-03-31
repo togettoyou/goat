@@ -9,7 +9,6 @@ import (
 	"goat-layout/pkg"
 	"goat-layout/pkg/conf"
 	"goat-layout/pkg/log"
-	"goat-layout/pkg/redis"
 	"goat-layout/pkg/validatorer"
 	"goat-layout/pkg/version"
 
@@ -26,7 +25,10 @@ func setup() {
 	conf.Setup()
 	log.Setup(conf.Log.Level)
 	validatorer.Setup()
-	_ = redis.Setup(conf.Redis.DB, conf.Redis.Addr, conf.Redis.Password)
+	//err := redis.Setup(conf.Redis.DB, conf.Redis.Addr, conf.Redis.Password)
+	//if err != nil {
+	//	panic(err)
+	//}
 	conf.OnChange(func() {
 		if err := pkg.Reset(); err != nil {
 			return

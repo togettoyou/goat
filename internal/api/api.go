@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"goat-layout/internal/model"
-	"goat-layout/internal/server/middleware"
+	"goat-layout/internal/server/middleware/cache"
 	"goat-layout/internal/svc"
 	"goat-layout/pkg/e"
 	logpkg "goat-layout/pkg/log"
@@ -74,7 +74,7 @@ func (b *Base) OK(arg ...interface{}) {
 	if len(arg) > 0 {
 		resp.Data = arg[0]
 	}
-	middleware.SetCode(b.c, resp.Code, resp.Msg)
+	cache.SetCode(b.c, resp.Code, resp.Msg)
 	b.c.AbortWithStatusJSON(http.StatusOK, resp)
 }
 
@@ -85,7 +85,7 @@ func (b *Base) Resp(httpCode int, err error, log bool, arg ...interface{}) {
 	if len(arg) > 0 {
 		resp.Data = arg[0]
 	}
-	middleware.SetCode(b.c, code, msg)
+	cache.SetCode(b.c, code, msg)
 	b.c.AbortWithStatusJSON(httpCode, resp)
 	if log && err != nil {
 		b.log.Error(fmt.Sprintf("%+v", err))
@@ -99,6 +99,17 @@ func (b *Base) HasErr(err error) bool {
 		return true
 	}
 	return false
+}
+
+// Parse 解析参数并校验，自动解析方式
+// obj 要解析的结构体实例地址
+// bind 解析类型
+// hideDetails 可选择隐藏参数校验详细信息
+func (b *Base) Parse(obj interface{}, hideDetails ...bool) bool {
+	if err := b.c.ShouldBind(obj); err != nil {
+		return b.validatorData(err, len(hideDetails) > 0 && hideDetails[0])
+	}
+	return true
 }
 
 // ParseWith 解析参数并校验，自定义解析方式

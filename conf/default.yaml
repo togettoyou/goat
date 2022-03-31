@@ -1,15 +1,21 @@
 # 服务配置
 SERVER:
+  # https 域名，自动配置 TLS 时必填
+  URL: https://example.com
   # 开发模式 debug,release,test
   RUNMODE: debug
   # 读超时/s
-  READTIMEOUT: 60
+  READTIMEOUT: 0
   # 写超时/s
-  WRITETIMEOUT: 60
-  # 端口
+  WRITETIMEOUT: 0
+  # 端口，当开启 TLS 时将锁定为 443
   HTTPPORT: 8888
   # 开启 https true,false
   TLS: false
+  # 自动配置 Let's Encrypt 证书
+  AUTOTLS: true
+  # 填写你自己的邮箱
+  ACMEEMAIL: foo@bar.com
   # 公钥路径
   CRT:
   # 私钥路径

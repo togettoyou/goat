@@ -5,4 +5,11 @@ services:
     ports:
       - "32288:8888"
     volumes:
-      - $PWD/conf:/root/togettoyou/conf
+      #      - $PWD/conf:/root/togettoyou/conf # 方式一，挂载conf
+      - /etc/timezone:/etc/timezone
+      - /etc/localtime:/etc/localtime
+    # 方式二，使用environment
+    environment:
+      - SERVER_HTTPPORT=8888
+      - SERVER_RUNMODE=release
+      - LOG_LEVEL=info

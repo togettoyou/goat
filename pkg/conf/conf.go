@@ -1,42 +1,47 @@
 package conf
 
 import (
+	"strings"
+
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )
 
 type config struct {
-	Server server `yaml:"SERVER"`
-	Log    log    `yaml:"LOG"`
-	Redis  redis  `yaml:"REDIS"`
-	Mysql  mysql  `yaml:"MYSQL"`
+	Server server `mapstructure:"SERVER"`
+	Log    log    `mapstructure:"LOG"`
+	Redis  redis  `mapstructure:"REDIS"`
+	Mysql  mysql  `mapstructure:"MYSQL"`
 }
 
 type server struct {
-	RunMode      string `yaml:"RUNMODE"`
-	ReadTimeout  int    `yaml:"READTIMEOUT"`
-	WriteTimeout int    `yaml:"WRITETIMEOUT"`
-	HttpPort     int    `yaml:"HTTPPORT"`
-	TLS          bool   `yaml:"TLS"`
-	Crt          string `yaml:"CRT"`
-	Key          string `yaml:"KEY"`
+	URL          string `mapstructure:"URL"`
+	RunMode      string `mapstructure:"RUNMODE"`
+	ReadTimeout  int    `mapstructure:"READTIMEOUT"`
+	WriteTimeout int    `mapstructure:"WRITETIMEOUT"`
+	HttpPort     int    `mapstructure:"HTTPPORT"`
+	TLS          bool   `mapstructure:"TLS"`
+	AutoTLS      bool   `mapstructure:"AUTOTLS"`
+	ACMEEmail    string `mapstructure:"ACMEEMAIL"`
+	Crt          string `mapstructure:"CRT"`
+	Key          string `mapstructure:"KEY"`
 }
 
 type log struct {
-	Level string `yaml:"LEVEL"`
+	Level string `mapstructure:"LEVEL"`
 }
 
 type redis struct {
-	DB       int    `yaml:"DB"`
-	Addr     string `yaml:"ADDR"`
-	Password string `yaml:"PASSWORD"`
+	DB       int    `mapstructure:"DB"`
+	Addr     string `mapstructure:"ADDR"`
+	Password string `mapstructure:"PASSWORD"`
 }
 
 type mysql struct {
-	Dsn         string `yaml:"DSN"`
-	MaxIdle     int    `yaml:"MAXIDLE"`
-	MaxOpen     int    `yaml:"MAXOPEN"`
-	MaxLifetime int    `yaml:"MAXLIFETIME"`
+	Dsn         string `mapstructure:"DSN"`
+	MaxIdle     int    `mapstructure:"MAXIDLE"`
+	MaxOpen     int    `mapstructure:"MAXOPEN"`
+	MaxLifetime int    `mapstructure:"MAXLIFETIME"`
 }
 
 var (
@@ -57,6 +62,8 @@ func Setup() {
 	}
 	viper.SetConfigType("yaml")
 	viper.AutomaticEnv()
+	replacer := strings.NewReplacer(".", "_")
+	viper.SetEnvKeyReplacer(replacer)
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
 	}

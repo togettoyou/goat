@@ -1,12 +1,15 @@
-FROM golang:1.15 AS builder
+FROM golang:1.16 AS builder
 ENV GO111MODULE=on
 ENV GOPROXY https://goproxy.cn,direct
-COPY . /root/togettoyou/
-WORKDIR /root/togettoyou/
+WORKDIR /build
+ADD go.mod .
+ADD go.sum .
+RUN go mod download
+COPY . .
 RUN make
 
 FROM scratch
-COPY --from=builder /root/togettoyou/go-server /root/togettoyou/
-COPY --from=builder /root/togettoyou/conf/ /root/togettoyou/conf/
-WORKDIR /root/togettoyou/
+WORKDIR /app
+COPY --from=builder /build/go-server .
+COPY --from=builder /build/conf/ ./conf/
 ENTRYPOINT ["./go-server"]
