@@ -11,7 +11,8 @@ function start() {
     exit 1
   fi
 
-  nohup "$BASE_DIR"/$SERVER_NAME &>/dev/null &
+  time="$(date +%Y%m%d)"
+  nohup "$BASE_DIR"/$SERVER_NAME > "$time".log 2>&1 &
 
   echo "sleeping..." && sleep $INTERVAL
 
