@@ -5,7 +5,7 @@ services:
     ports:
       - "32288:8888"
     volumes:
-      #      - $PWD/conf:/root/togettoyou/conf # 方式一，挂载conf
+      #      - $PWD/conf:/app/conf # 方式一，挂载conf
       - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
     # 方式二，使用environment
