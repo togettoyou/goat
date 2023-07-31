@@ -23,7 +23,7 @@ spec:
             - containerPort: 8888
           volumeMounts:
             - name: config-volume
-              mountPath: /root/togettoyou/conf/
+              mountPath: /app/conf/
       volumes:
         - name: config-volume
           configMap:
